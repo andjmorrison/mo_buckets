@@ -1,10 +1,10 @@
 let urlPhoto = ''
 
-function buildChart (playerId, playerTeamId) {
+function buildChart(playerId, playerTeamId) {
 
-    
 
-    d3.json(`/shotchart/${playerId}/${playerTeamId}`).then( individual =>{
+    // shotchart
+    d3.json(`/shotchart/${playerId}/${playerTeamId}`).then(individual => {
 
         // name
         playerName = individual[0][4]
@@ -19,7 +19,7 @@ function buildChart (playerId, playerTeamId) {
         let shotDistance = []
         let shotDate = []
 
-        individual.forEach ( row => {
+        individual.forEach(row => {
 
             let x = row[17]
             let y = row[18]
@@ -42,7 +42,7 @@ function buildChart (playerId, playerTeamId) {
         // urlPhoto = 'https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png'
 
         function getUrlPhoto(urlPhoto) {
-            fetch(urlPhoto).then( response => {
+            fetch(urlPhoto).then(response => {
                 if (response.status == 403) {
                     urlPhoto = `https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png`
                     return urlPhoto
@@ -51,7 +51,7 @@ function buildChart (playerId, playerTeamId) {
                 //     urlPhoto2 = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
                 //     return urlPhoto2
                 // }
-                })
+            })
             return urlPhoto
         }
 
@@ -66,7 +66,7 @@ function buildChart (playerId, playerTeamId) {
             text: shotText,
             marker: {
                 color: shotDistance,
-                }
+            }
         };
 
         var data = [trace];
@@ -78,11 +78,11 @@ function buildChart (playerId, playerTeamId) {
             xaxis: {
                 range: [-260, 260],
                 type: 'linear'
-              },
-              yaxis: {
+            },
+            yaxis: {
                 range: [-50, 850],
                 type: 'linear'
-              },
+            },
             margin: {
                 l: 50,
                 r: 50,
@@ -94,17 +94,17 @@ function buildChart (playerId, playerTeamId) {
             plot_bgcolor: 'white',
             images: [
                 {
-                  x: 1,
-                  y: .832,
-                  sizex: 0.2,
-                  sizey: 0.2,
-                  source: urlPhoto,
-                  xanchor: 'right',
-                  xref: 'paper',
-                  yanchor: 'bottom',
-                  yref: 'paper'
+                    x: 1,
+                    y: .832,
+                    sizex: 0.2,
+                    sizey: 0.2,
+                    source: urlPhoto,
+                    xanchor: 'right',
+                    xref: 'paper',
+                    yanchor: 'bottom',
+                    yref: 'paper'
                 }
-              ],
+            ],
         }
 
         // console.log(trace)
@@ -112,20 +112,72 @@ function buildChart (playerId, playerTeamId) {
         Plotly.newPlot('shotchart', data, layout);
 
     })
+
+    // radar plot
+    d3.json(`/playerdashboard/${playerId}`).then(individual => {
+
+        // name
+        let headers = individual['headers']
+        console.log(headers)
+
+        rows = individual['rowSet'][0]
+        console.log(rows)
+
+        let playerGP = rows[2]
+
+        let playerPTS = rows[26]/playerGP
+        let playerREB = rows[18]/playerGP
+        let playerAST = rows[19]/playerGP
+        let playerSTL = rows[21]/playerGP
+        let playerBLK = rows[22]/playerGP
+
+
+        // console.log(shotCoordX)
+        // console.log(shotCoordY)
+
+        urlPhoto = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
+        // urlPhoto = 'https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png'
+
+
+        dataRadar = [{
+            type: 'scatterpolar',
+            r: [playerPTS, playerREB, playerAST, playerSTL, playerBLK, playerPTS],
+            theta: ['PTS', 'REB', 'AST', 'STL', 'BLK', 'PTS'],
+            fill: 'toself'
+        }]
+        console.log(dataRadar)
+
+
+        layoutRadar = {
+            polar: {
+                radialaxis: {
+                    visible: true,
+                    range: [0, 30]
+                }
+            },
+            showlegend: false
+        }
+
+        Plotly.newPlot('radar', dataRadar, layoutRadar);
+
+    })
+
+
 }
+
 
 function init() {
     // Grab a reference to the dropdown select element
     let selector = d3.select("#selectPlayer")
 
     // Use the list of sample names to populate the select options
-    d3.json("/players").then( players => {
+    d3.json("/players").then(players => {
 
         // console.log(players)
 
         let testing = Object.entries(players)
 
-        testing.forEach( (player) => {
+        testing.forEach((player) => {
 
             // console.log(player[1].name, player[1].team_id)
 
@@ -136,8 +188,8 @@ function init() {
             // let playerString = playerId, playerTeamId
             let playerArray = [playerId, playerTeamId]
             let playerObject = {
-                'id' : playerId,
-                'team' : playerTeamId
+                'id': playerId,
+                'team': playerTeamId
             }
 
             // console.log(playerArray)
@@ -147,12 +199,12 @@ function init() {
             // console.log(typeof playerObject)
 
             selector
-            .append('option')
-            .text(playerName)
-            .attr('value', [playerObject.id, playerObject.team])
+                .append('option')
+                .text(playerName)
+                .attr('value', [playerObject.id, playerObject.team])
             // .property("value", playerObject)
         })
-    
+
 
         // let selector = d3.select("#selectPlayer")
         let selectId = document.getElementById('selectPlayer')
@@ -161,7 +213,7 @@ function init() {
         function sortSelectOptions(selector) {
 
             let tmpAry = new Array()
-            for (let i=0;i<selector.options.length;i++) {
+            for (let i = 0; i < selector.options.length; i++) {
                 tmpAry[i] = new Array()
                 tmpAry[i][0] = selector.options[i].text
                 tmpAry[i][1] = selector.options[i].value
@@ -170,7 +222,7 @@ function init() {
             while (selector.options.length > 0) {
                 selector.options[0] = null
             }
-            for (let i=0;i<tmpAry.length;i++) {
+            for (let i = 0; i < tmpAry.length; i++) {
                 let op = new Option(tmpAry[i][0], tmpAry[i][1])
                 selector.options[i] = op
             }
@@ -190,13 +242,13 @@ function init() {
         function firstBuild(firstPlayer) {
 
             let data = firstPlayer.split(',')
-        
+
             // console.log(data[0], data[1])
             // console.log(typeof data)
-        
+
             // Fetch new data each time a new player is selected
             console.log(`Plotting stats for player ${data[0]} on team ${data[1]}`)
-            buildChart(data[0],data[1])
+            buildChart(data[0], data[1])
         }
         firstBuild(firstPlayer)
     })
@@ -216,7 +268,7 @@ function optionChanged(newPlayer) {
 
     // Fetch new data each time a new player is selected
     console.log(`Plotting stats for player ${data[0]} on team ${data[1]}`)
-    buildChart(data[0],data[1])
+    buildChart(data[0], data[1])
 }
 
 init()

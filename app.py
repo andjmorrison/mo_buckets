@@ -65,7 +65,7 @@ def construct_dashboard(player):
 
     dashboard = playerdashboardbygeneralsplits.PlayerDashboardByGeneralSplits(player_id=player, season='2018-19').get_dict()
 
-    data = dashboard['resultSets'][0]['rowSet']
+    data = dashboard['resultSets'][0]
 
     return jsonify(data)
 
