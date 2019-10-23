@@ -8,7 +8,7 @@ import pymongo
 
 import nba_api
 from nba_api.stats.static import players, teams
-from nba_api.stats.endpoints import shotchartdetail, commonplayerinfo
+from nba_api.stats.endpoints import shotchartdetail, commonplayerinfo, playerdashboardbygeneralsplits
 
 # credentials
 from resources import mongo_user, mongo_pass, mongo_clusteruri
@@ -57,6 +57,15 @@ def construct_shotchart(player, team):
     # allshots = shotchartdetail.ShotChartDetail(player_id=player, team_id=1610612745).get_dict()
 
     data = allshots['resultSets'][0]['rowSet']
+
+    return jsonify(data)
+
+@app.route('/playerdashboard/<player>')
+def construct_dashboard(player):
+
+    dashboard = playerdashboardbygeneralsplits.PlayerDashboardByGeneralSplits(player_id=player, season='2018-19').get_dict()
+
+    data = dashboard['resultSets'][0]['rowSet']
 
     return jsonify(data)
 

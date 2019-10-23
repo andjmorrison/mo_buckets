@@ -44,7 +44,7 @@ function buildChart (playerId, playerTeamId) {
         function getUrlPhoto(urlPhoto) {
             fetch(urlPhoto).then( response => {
                 if (response.status == 403) {
-                    urlPhoto2 = `https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png`
+                    urlPhoto = `https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png`
                     return urlPhoto
                 }
                 // else {
@@ -52,6 +52,7 @@ function buildChart (playerId, playerTeamId) {
                 //     return urlPhoto2
                 // }
                 })
+            return urlPhoto
         }
 
         getUrlPhoto(urlPhoto)
