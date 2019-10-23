@@ -1,6 +1,8 @@
-let urlPhoto = []
+let urlPhoto = ''
 
 function buildChart (playerId, playerTeamId) {
+
+    
 
     d3.json(`/shotchart/${playerId}/${playerTeamId}`).then( individual =>{
 
@@ -39,12 +41,20 @@ function buildChart (playerId, playerTeamId) {
         urlPhoto = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
         // urlPhoto = 'https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png'
 
-        
+        function getUrlPhoto(urlPhoto) {
+            fetch(urlPhoto).then( response => {
+                if (response.status == 403) {
+                    urlPhoto2 = `https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png`
+                    return urlPhoto
+                }
+                // else {
+                //     urlPhoto2 = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
+                //     return urlPhoto2
+                // }
+                })
+        }
 
-        console.log(urlTest)
-
-        
-
+        getUrlPhoto(urlPhoto)
         console.log(urlPhoto)
 
         var trace = {
