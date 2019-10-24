@@ -39,8 +39,9 @@ function buildChart(playerId, playerTeamId) {
 
         })
 
-        // console.log(shotCoordX)
-        // console.log(shotCoordY)
+        madeBaskets = (
+            shotMade.reduce((a, b) => a + b, 0)
+          )
 
         urlPhoto = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
         // urlPhoto = 'https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png'
@@ -69,9 +70,6 @@ function buildChart(playerId, playerTeamId) {
         //     return urlPhoto
         // }
 
-        // getUrlPhoto(urlPhoto)
-        // console.log(urlPhoto, "weeeee")
-
         let trace = {
             x: shotCoordX,
             y: shotCoordY,
@@ -80,11 +78,14 @@ function buildChart(playerId, playerTeamId) {
             text: shotText,
             marker: {
                 color: shotMade,
-                colorscale: 'Portland',
+                colorscale: [
+                    ['0', 'goldenrod'],
+                    ['1.0', 'teal']
+                  ],
             },
             colorscale: [
-                ['0', 'red'],
-                ['1.0', 'blue']
+                ['0', 'goldenrod'],
+                ['1.0', 'teal']
               ],
             name: 'Shots Taken'
         }
@@ -97,7 +98,7 @@ function buildChart(playerId, playerTeamId) {
             title: {
                 text:`Shot Chart:<br> ${playerName}, ${playerTeam}`,
                 font: {
-                //   family: 'Courier New, monospace',
+                  family: 'Helvetica Neue, monospace',
                   size: 24,
                   color: 'white'
                 },
@@ -109,7 +110,7 @@ function buildChart(playerId, playerTeamId) {
                   y: 355,
                   xref: 'x',
                   yref: 'y',
-                  text: 'FG%: ',
+                  text: `FG: ${madeBaskets}/${shotMade.length}`,
                   showarrow: false,
                   ax: 0,
                   ay: -40
@@ -119,7 +120,7 @@ function buildChart(playerId, playerTeamId) {
                     y: 340,
                     xref: 'x',
                     yref: 'y',
-                    text: '3P%: ',
+                    text: `FG%: ${(madeBaskets/(shotMade.length)).toFixed(2)}`,
                     showarrow: false,
                     ax: 0,
                     ay: -40
@@ -149,7 +150,7 @@ function buildChart(playerId, playerTeamId) {
                 t: 100,
                 pad: 4
             },
-            paper_bgcolor: '#8D6457',
+            paper_bgcolor: '#7F9DA4',
             plot_bgcolor: '#F4F4F3',
             shapes: [
                 {
