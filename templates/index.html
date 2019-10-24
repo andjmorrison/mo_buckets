@@ -27,10 +27,16 @@
 
 		<div class="row">
 
+			<div class="col-md-12 text-center">
+				<h5>Select Player:
+					<select id="selectPlayer" onchange='optionChanged(this.value)'></select>
+				</h5>
+			</div>
+
+		</div>
+		<div class="row">
 			<div class="col-md-6">
-				<select id="selectPlayer" onchange='optionChanged(this.value)'></select>
 				<div class="col-centered" id="shotchart"></div>
-				<div class="col-centered" id="shotchart-animated"></div>
 			</div>
 
 			<div class="col-md-6">

@@ -8,6 +8,7 @@ function buildChart(playerId, playerTeamId) {
 
         // name
         playerName = individual[0][4]
+        playerTeam = individual[0][6]
         // console.log(playerName)
 
         // coords
@@ -18,6 +19,7 @@ function buildChart(playerId, playerTeamId) {
         let shotText = []
         let shotDistance = []
         let shotDate = []
+        let shotMade = []
 
         individual.forEach(row => {
 
@@ -26,12 +28,14 @@ function buildChart(playerId, playerTeamId) {
             let text = row[11]
             let distance = row[16]
             let date = row[21]
+            let made = row[20]
 
             shotCoordX.push(x)
             shotCoordY.push(y)
             shotText.push(text)
             shotDistance.push(distance)
             shotDate.push(date)
+            shotMade.push(made)
 
         })
 
@@ -58,29 +62,68 @@ function buildChart(playerId, playerTeamId) {
         getUrlPhoto(urlPhoto)
         console.log(urlPhoto)
 
-        var trace = {
+        let trace = {
             x: shotCoordX,
             y: shotCoordY,
             mode: 'markers',
             type: 'scatter',
             text: shotText,
             marker: {
-                color: shotDistance,
-            }
-        };
+                color: shotMade,
+                colorscale: 'Portland',
+            },
+            colorscale: [
+                ['0', 'red'],
+                ['1.0', 'blue']
+              ],
+        }
 
-        var data = [trace];
+        console.log(trace)
 
-        var layout = {
+        let data = [trace]
+
+        let layout = {
+            title: {
+                text:`Shot Chart:<br> ${playerName}, ${playerTeam}`,
+                font: {
+                //   family: 'Courier New, monospace',
+                  size: 24,
+                  color: 'white'
+                },
+            },
+            annotations: [
+                {
+                  x: 200,
+                  y: 355,
+                  xref: 'x',
+                  yref: 'y',
+                  text: 'FG%: ',
+                  showarrow: false,
+                  ax: 0,
+                  ay: -40
+                },
+                {
+                    x: 200,
+                    y: 340,
+                    xref: 'x',
+                    yref: 'y',
+                    text: '3P%: ',
+                    showarrow: false,
+                    ax: 0,
+                    ay: -40
+                  }
+            ],
             autosize: false,
-            width: 625,
+            width: 605,
             height: 800,
             xaxis: {
                 range: [-260, 260],
+                showgrid: false,
                 type: 'linear'
             },
             yaxis: {
-                range: [-50, 850],
+                range: [-100, 500],
+                showgrid: false,
                 type: 'linear'
             },
             margin: {
@@ -92,10 +135,106 @@ function buildChart(playerId, playerTeamId) {
             },
             paper_bgcolor: '#7f7f7f',
             plot_bgcolor: 'white',
+            shapes: [
+                {
+                    // halfcourt
+                    type:'rect',
+                    xref:'x',
+                    yref:'y',
+                    x0:'-250',
+                    y0:'-47.5',
+                    x1:'250',
+                    y1:'422.5',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+                {
+                    // basket
+                    type:'circle',
+                    xref:'x',
+                    yref:'y',
+                    x0:'7.5',
+                    y0:'7.5',
+                    x1:'-7.5',
+                    y1:'-7.5',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+                {
+                    // 3 pt left corner
+                    type:'rect',
+                    xref:'x',
+                    yref:'y',
+                    x0:'-80',
+                    y0:'-47.5',
+                    x1:'80',
+                    y1:'143.5',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+                {
+                    type:'line',
+                    xref:'x',
+                    yref:'y',
+                    x0:'-220',
+                    y0:'-47.5',
+                    x1:'-220',
+                    y1:'92.5',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+                {
+                    // 3pt right corner
+                    type:'line',
+                    xref:'x',
+                    yref:'y',
+                    x0:'220',
+                    y0:'-47.5',
+                    x1:'220',
+                    y1:'92.5',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+                {
+                    // 3pt arc
+                    type:'path',
+                    xref:'x',
+                    yref:'y',
+                    path:'M -220 92.5 C -70 300, 70 300, 220 92.5',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+                {
+                    // ft circle
+                    type:'circle',
+                    xref:'x',
+                    yref:'y',
+                    x0:'60',
+                    y0:'200',
+                    x1:'-60',
+                    y1:'80',
+                    line: {
+                        color:'rgba(10, 10, 10, 1)',
+                        width:1
+                    }
+                },
+            ],
             images: [
                 {
-                    x: 1,
-                    y: .832,
+                    x: .95,
+                    y: .87,
                     sizex: 0.2,
                     sizey: 0.2,
                     source: urlPhoto,

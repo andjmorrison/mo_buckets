@@ -53,7 +53,11 @@ def player_scraper():
 @app.route('/shotchart/<player>/<team>')
 def construct_shotchart(player, team):
 
-    allshots = shotchartdetail.ShotChartDetail(player_id=player, team_id=team, season_nullable='2018-19').get_dict()
+    allshots = shotchartdetail.ShotChartDetail(
+                player_id=player, 
+                team_id=team, 
+                context_measure_simple='FGA',
+                season_nullable='2018-19').get_dict()
     # allshots = shotchartdetail.ShotChartDetail(player_id=player, team_id=1610612745).get_dict()
 
     data = allshots['resultSets'][0]['rowSet']
