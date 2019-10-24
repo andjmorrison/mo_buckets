@@ -7,8 +7,9 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Mo Buckets</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
-
+	
 
 </head>
 
@@ -38,14 +39,18 @@
 			<div class="col-md-6">
 				<div class="col-centered" id="shotchart"></div>
 			</div>
-
-			<div class="col-md-6">
-				<div class="col-centered" id="radar"></div>
+			<div class="container-fluid">
+				<div class="col-md-3 text-centered">
+					<div class="col-centered" id="paracoord"></div>
+				<!-- </div>
+				<br>
+				<div class="col-md-6"> -->
+					<div class="col-centered" id="radar"></div>
+				</div>
 			</div>
-
-			<div class="headshot" href=""></div>
-
 		</div>
+
+		<div class="row"></div>
 
 	</div>
 

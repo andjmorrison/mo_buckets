@@ -15,12 +15,26 @@ client = pymongo.MongoClient(conn)
 
 db = client.nba_db
 
-for player in test['resultSets'][0]['rowSet']:
-    # print( i )
+# document = db.player_stats.find_one({'id':203507})
 
+# stats = {}
+
+# player = db.player_stats.find({'id':203507})
+# # player = db.player_stats.find({'id':playerId})
+
+# for stat in player:
+#     stats[stat['id']] = {'name': stat['name']}
+
+
+# print(stats)
+
+# test = db.player_stats.find()
+
+
+for player in test['resultSets'][0]['rowSet']:
 
     document = {
-    "id" : player[0],
+    "player_id" : player[0],
     "name" : player[1],
     "team_id" : player[2],
     "team_abbr" : player[3],
@@ -87,4 +101,4 @@ for player in test['resultSets'][0]['rowSet']:
     "cfparams" : player[64]}
         
     print(document)
-    db.player_stats.insert_one(document)
+    db.player_stats2.insert_one(document)

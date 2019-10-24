@@ -1,4 +1,4 @@
-let urlPhoto = ''
+var urlPhoto = ''
 
 function buildChart(playerId, playerTeamId) {
 
@@ -45,22 +45,32 @@ function buildChart(playerId, playerTeamId) {
         urlPhoto = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
         // urlPhoto = 'https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png'
 
-        function getUrlPhoto(urlPhoto) {
-            fetch(urlPhoto).then(response => {
-                if (response.status == 403) {
-                    urlPhoto = `https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png`
-                    return urlPhoto
-                }
-                // else {
-                //     urlPhoto2 = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
-                //     return urlPhoto2
-                // }
-            })
-            return urlPhoto
-        }
+        // function getUrlPhoto(urlPhoto) {
+        //     fetch(urlPhoto).then(response => {
 
-        getUrlPhoto(urlPhoto)
-        console.log(urlPhoto)
+        //         console.log(response.status)
+        //         if (response.status === 403) {
+        //             urlPhoto = `https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png`
+        //             console.log(urlPhoto)
+        //             return urlPhoto
+
+        //         }
+        //         // if (response.status === 200) {
+        //         //     urlPhoto = 'https://img.icons8.com/pastel-glyph/2x/worldwide-location.png'
+        //         //     console.log(urlPhoto)
+        //         //     return urlPhoto
+
+        //         // }
+        //         // else {
+        //         //     urlPhoto2 = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
+        //         //     return urlPhoto2
+        //         // }
+        //     })
+        //     return urlPhoto
+        // }
+
+        // getUrlPhoto(urlPhoto)
+        // console.log(urlPhoto, "weeeee")
 
         let trace = {
             x: shotCoordX,
@@ -76,6 +86,7 @@ function buildChart(playerId, playerTeamId) {
                 ['0', 'red'],
                 ['1.0', 'blue']
               ],
+            name: 'Shots Taken'
         }
 
         console.log(trace)
@@ -90,6 +101,7 @@ function buildChart(playerId, playerTeamId) {
                   size: 24,
                   color: 'white'
                 },
+                showlegend: true,
             },
             annotations: [
                 {
@@ -119,12 +131,16 @@ function buildChart(playerId, playerTeamId) {
             xaxis: {
                 range: [-260, 260],
                 showgrid: false,
-                type: 'linear'
+                type: 'linear',
+                showline: false,
+                showticklabels: false,
             },
             yaxis: {
                 range: [-100, 500],
                 showgrid: false,
-                type: 'linear'
+                type: 'linear',
+                showline: false,
+                showticklabels: false,
             },
             margin: {
                 l: 50,
@@ -133,8 +149,8 @@ function buildChart(playerId, playerTeamId) {
                 t: 100,
                 pad: 4
             },
-            paper_bgcolor: '#7f7f7f',
-            plot_bgcolor: 'white',
+            paper_bgcolor: '#8D6457',
+            plot_bgcolor: '#F4F4F3',
             shapes: [
                 {
                     // halfcourt
@@ -246,8 +262,6 @@ function buildChart(playerId, playerTeamId) {
             ],
         }
 
-        // console.log(trace)
-
         Plotly.newPlot('shotchart', data, layout);
 
     })
@@ -257,10 +271,8 @@ function buildChart(playerId, playerTeamId) {
 
         // name
         let headers = individual['headers']
-        console.log(headers)
 
         rows = individual['rowSet'][0]
-        console.log(rows)
 
         let playerGP = rows[2]
 
@@ -269,13 +281,6 @@ function buildChart(playerId, playerTeamId) {
         let playerAST = rows[19]/playerGP
         let playerSTL = rows[21]/playerGP
         let playerBLK = rows[22]/playerGP
-
-
-        // console.log(shotCoordX)
-        // console.log(shotCoordY)
-
-        urlPhoto = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/${playerTeamId}/2019/260x190/${playerId}.png`
-        // urlPhoto = 'https://scoutfly.cbsistatic.com/bundles/scoutcss/images/default/default-headshot.png'
 
 
         dataRadar = [{
@@ -291,7 +296,7 @@ function buildChart(playerId, playerTeamId) {
             polar: {
                 radialaxis: {
                     visible: true,
-                    range: [0, 30]
+                    range: [0, 20]
                 }
             },
             showlegend: false
@@ -301,24 +306,76 @@ function buildChart(playerId, playerTeamId) {
 
     })
 
+    // parallel coordinates
+    d3.json(`/playerdashboardextended/${playerId}`).then(individual => {
+
+        console.log('dashboard extended',individual)
+
+        let w_rank = individual[37]
+        let fg_pct_rank = individual[43]
+        let fg3m_rank = individual[44]
+        let min_rank = individual[40]
+
+        console.log(w_rank)
+
+        let traceParaCoord = {
+            type: 'parcoords',
+            line: {
+                showscale: true,
+                reversescale: true,
+                colorscale: 'Jet',
+                cmin: -4000,
+                cmax: -100,
+                color: 'blue'
+              },
+            
+            dimensions: [{
+              range: [500,1],
+              label: 'Win Pct',
+              values: [w_rank],
+              tickvals: [1,100,200,300,400,500]
+            }, {    
+              range: [500,1],
+              label: 'FG Pct',
+              values: [fg_pct_rank],
+              tickvals: [1,100,200,300,400,500]
+            }, {
+              range: [500,1],
+              label: '3pt Pct',
+              values: [fg3m_rank],
+              tickvals: [1,100,200,300,400,500],
+            }, {
+              range: [500,1],
+              label: 'Min',
+              values: [min_rank],
+              tickvals: [1,100,200,300,400,500]
+            }]
+        }
+
+        let layoutParaCoords = {
+            width: 800
+          }
+          
+        let dataParaCoord = [traceParaCoord]
+          
+        Plotly.newPlot('paracoord', dataParaCoord, layoutParaCoords)
+
+    })
 
 }
 
-
+// initialization of list/selector/chart
 function init() {
+
     // Grab a reference to the dropdown select element
     let selector = d3.select("#selectPlayer")
 
     // Use the list of sample names to populate the select options
     d3.json("/players").then(players => {
 
-        // console.log(players)
-
         let testing = Object.entries(players)
 
         testing.forEach((player) => {
-
-            // console.log(player[1].name, player[1].team_id)
 
             let playerName = player[1].name
             let playerId = player[1].id
@@ -341,11 +398,8 @@ function init() {
                 .append('option')
                 .text(playerName)
                 .attr('value', [playerObject.id, playerObject.team])
-            // .property("value", playerObject)
         })
 
-
-        // let selector = d3.select("#selectPlayer")
         let selectId = document.getElementById('selectPlayer')
 
         // sort function
@@ -365,8 +419,6 @@ function init() {
                 let op = new Option(tmpAry[i][0], tmpAry[i][1])
                 selector.options[i] = op
             }
-
-            // console.log(tmpAry)
 
             return
         }
@@ -388,14 +440,11 @@ function init() {
             // Fetch new data each time a new player is selected
             console.log(`Plotting stats for player ${data[0]} on team ${data[1]}`)
             buildChart(data[0], data[1])
+            // buildLine(data[0])
         }
         firstBuild(firstPlayer)
     })
 }
-
-// let selector = d3.select("#selectPlayer")
-// let selector = document.getElementById('selectPlayer')
-
 
 // use functions based on selected player
 function optionChanged(newPlayer) {

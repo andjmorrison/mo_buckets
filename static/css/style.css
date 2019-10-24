@@ -1,0 +1,9 @@
+body {
+    /* background-image: url({{ url_for('static', filename='images/markus-spiske-BfphcCvhl6E-unsplash.jpg') }});
+    background-size: 1367px 892px; */
+    background-color: #F4F4F3;
+}
+
+.jumbotron {
+    background-color: #7F9DA4
+}
