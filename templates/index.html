@@ -14,47 +14,60 @@
 </head>
 
 <body>
-	<div class="container-fluid">
 
-		<div class="row">
+	<!-- jumbotron -->
+	<div class="row">
 
-			<div class="col-md-12 jumbotron text-center">
-				<h1>Mo Buckets</h1>
-				<p>Shot Charts => More Buckets</p>
-			</div>
-
+		<div class="col-md-12 jumbotron text-center">
+			<h1>Mo Buckets</h1>
+			<p>Shot Charts => More Buckets</p>
 		</div>
 
+	</div>
 
-		<div class="row">
+	<!-- selector -->
+	<div class="row">
 
-			<div class="col-md-2 col-md-offset-5 text-center">
-				<h5>Select Player:
-					<select id="selectPlayer" onchange='optionChanged(this.value)'></select>
-				</h5>
-			</div>
-
+		<div class="col-md-2 col-md-offset-5 text-center">
+			<h5>Select Player:
+				<select id="selectPlayer" onchange='optionChanged(this.value)'></select>
+			</h5>
 		</div>
-		<div class="row">
+
+	</div>
+
+	<div class="row">
+		
 			<div class="col-md-6">
 				<div class="col-centered rounded" id="shotchart"></div>
 			</div>
-			<div class="container-fluid">
-				<div class="col-md-4 py-5 text-centered">
-					<div class="coord-plot py-3 container border-info rounded">
-						<div class="col-centered py-1" id="paracoord"></div>
-					</div>
-					
-					<div class="radar-plot py-3 container border-info rounded">
-						<div class="col-centered py-5" id="radar"></div>
-						<div class="col-centered py-5" id="playertable"></div>
-					</div>
+
+		<div class="container-fluid col-md-4 additional-plots">
+
+				<div class="container-fluid">
+					<div class="col-centered" id="paracoord"></div>
+				</div>
+			
+			<div class="card" style="width: 18rem;">
+				<div class="playertable col-sm-3">
+					<div class="col py-5" id="playertable"></div>
 				</div>
 			</div>
 
-			<div class="row"></div>
+			<div class="card col-sm-offset-5 col-sm-3" style="width: 18rem;">
+				<div class="radar col-sm-offset-5 col-sm-3">
+					<div class="col py-5" id="radar"></div>
+				</div>
+			</div>
 
 		</div>
+
+
+
+
+
+
+
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>

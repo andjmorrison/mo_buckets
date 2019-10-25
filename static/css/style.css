@@ -1,7 +1,12 @@
 body {
+    /* background-color: red, */
     background-image: linear-gradient(135deg, #F4F4F3 0%, #F4F4F3 100%);
     box-sizing: border-box;
     padding: 30px;
+}
+
+.main-contain{
+    background-color: red,
 }
 
 .jumbotron {
@@ -9,11 +14,19 @@ body {
     background-image: linear-gradient(135deg, #4A494A 0%, #7F9DA4 100%);
     color: #F4F4F3;
 }
-.coord-plot{
+
+.additional-plots{
+    background-color: #F4F4F3;
+}
+
+#paracoord{
     background-color: #7F9DA4;
 }
 
-.radar-plot{
+#radar{
+    background-color: #7F9DA4;
+}
+#playertable{
     background-color: #7F9DA4;
 }
 
