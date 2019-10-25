@@ -107,7 +107,7 @@ function buildChart(playerId, playerTeamId) {
             annotations: [
                 {
                   x: 200,
-                  y: 355,
+                  y: -65,
                   xref: 'x',
                   yref: 'y',
                   text: `FG: ${madeBaskets}/${shotMade.length}`,
@@ -117,7 +117,7 @@ function buildChart(playerId, playerTeamId) {
                 },
                 {
                     x: 200,
-                    y: 340,
+                    y: -80,
                     xref: 'x',
                     yref: 'y',
                     text: `FG%: ${(madeBaskets/(shotMade.length)).toFixed(2)}`,
@@ -135,6 +135,7 @@ function buildChart(playerId, playerTeamId) {
                 type: 'linear',
                 showline: false,
                 showticklabels: false,
+                zeroline: false,
             },
             yaxis: {
                 range: [-100, 500],
@@ -142,6 +143,7 @@ function buildChart(playerId, playerTeamId) {
                 type: 'linear',
                 showline: false,
                 showticklabels: false,
+                zeroline: false,
             },
             margin: {
                 l: 50,
@@ -268,37 +270,102 @@ function buildChart(playerId, playerTeamId) {
     })
 
     // radar plot
-    d3.json(`/playerdashboard/${playerId}`).then(individual => {
+    d3.json(`/playerdashboard/${playerId}`).then(response => {
 
         // name
-        let headers = individual['headers']
+        let headers = response['headers']
 
-        rows = individual['rowSet'][0]
+        rows = response['resultSets'][0]['rowSet'][0]
 
-        let playerGP = rows[2]
-
-        let playerPTS = rows[26]/playerGP
-        let playerREB = rows[18]/playerGP
-        let playerAST = rows[19]/playerGP
-        let playerSTL = rows[21]/playerGP
-        let playerBLK = rows[22]/playerGP
+        // let playerGp = rows[2]
+        // let playerWinPct = rows[5]
+        let playerPts = rows[26]
+        // let playerPlusMinus = rows[27]
+        let playerFgM = rows[7]
+        let playerFgA = rows[8]
+        let playerFg3M = rows[10]
+        let playerFg3A = rows[11]
+        let playerAst = rows[19]
+        let playerReb = rows[18]
+        let playerOReb = rows[16]
+        let playerDReb = rows[17]
+        let playerStl = rows[21]
+        let playerBlk = rows[22]
+        let playerBlkA = rows[23]
+        let playerTov = rows[20]
+        let playerPf = rows[24]
+      
 
 
         dataRadar = [{
             type: 'scatterpolar',
-            r: [playerPTS, playerREB, playerAST, playerSTL, playerBLK, playerPTS],
-            theta: ['PTS', 'REB', 'AST', 'STL', 'BLK', 'PTS'],
-            fill: 'toself'
+            r: [
+                // playerGp,
+                // playerWinPct,
+                playerPts,
+                // playerPlusMinus,
+                playerFgM,
+                playerFgA,
+                playerFg3M,
+                playerFg3A,                
+                playerAst,
+                playerReb,
+                playerOReb,
+                playerDReb,
+                playerStl,
+                playerBlk,
+                playerBlkA,
+                playerTov,
+                playerPf,
+            ],
+            theta: [
+                // 'Gp',
+                // 'WinPct',
+                'Pts',
+                // 'PlusMinus',
+                'FgM',
+                'FgA',
+                'Fg3M',
+                'Fg3A',
+                'Ast',
+                'Reb',
+                'OReb',
+                'DReb',
+                'Stl',
+                'Blk',
+                'BlkA',
+                'Tov',
+                'Pf',
+            ],
+            fill: 'toself',
+            fillcolor: 'goldenrod',
+            line:{
+                color: 'teal'
+            }
         }]
         console.log(dataRadar)
 
 
         layoutRadar = {
+            title: {
+                text:`Stats Per 36`,
+                font: {
+                  family: 'Helvetica Neue, monospace',
+                  size: 16,
+                  color: 'teal'
+                },
+            },
+            width: 400,
+            height: 400,
+            paper_bgcolor: '#F4F4F3',
+            plot_bgcolor: '#F4F4F3',
             polar: {
                 radialaxis: {
                     visible: true,
-                    range: [0, 20]
-                }
+                    range: [0, 25]
+                },
+                paper_bgcolor: '#F4F4F3',
+                // bgcolor: 'teal',
             },
             showlegend: false
         }
@@ -308,16 +375,31 @@ function buildChart(playerId, playerTeamId) {
     })
 
     // parallel coordinates
-    d3.json(`/playerdashboardextended/${playerId}`).then(individual => {
+    d3.json(`/playerdashboardextended/${playerId}`).then(response => {
 
-        console.log('dashboard extended',individual)
+        console.log('dashboard extended',response)
 
-        let w_rank = individual[37]
-        let fg_pct_rank = individual[43]
-        let fg3m_rank = individual[44]
-        let min_rank = individual[40]
-
-        console.log(w_rank)
+        let playerName = response[1]
+        let rankGp = response[34]
+        let rankWin = response[35]
+        let rankPts = response[58]
+        let rankPlusMinus = response[59]
+        let rankFgM = response[39]
+        let rankFgA = response[40]
+        let rankFgPct = response[41]
+        let rankFg3M = response[42]
+        let rankFg3A = response[43]
+        let rankFtM = response[45]
+        let rankFtA = response[46]
+        let rankAst = response[51]
+        let rankReb = response[50]
+        let rankOReb = response[48]
+        let rankDReb = response[49]
+        let rankStl = response[53]
+        let rankBlk = response[54]
+        let rankBlkA = response[55]
+        let rankTov = response[52]
+        let rankPf = response[56]
 
         let traceParaCoord = {
             type: 'parcoords',
@@ -327,39 +409,261 @@ function buildChart(playerId, playerTeamId) {
                 colorscale: 'Jet',
                 cmin: -4000,
                 cmax: -100,
-                color: 'blue'
+                color: 'teal'
               },
             
             dimensions: [{
               range: [500,1],
-              label: 'Win Pct',
-              values: [w_rank],
-              tickvals: [1,100,200,300,400,500]
+              label: 'Wins',
+              values: [rankWin],
+              tickvals: [1,100,200,300,400,500],
+              ticktext: ['Best', 'Great', 'Good', 'Okay', 'Passable', 'G-League']
             }, {    
               range: [500,1],
-              label: 'FG Pct',
-              values: [fg_pct_rank],
-              tickvals: [1,100,200,300,400,500]
+              label: 'GP',
+              values: [rankGp],
+              tickvals: []
             }, {
               range: [500,1],
-              label: '3pt Pct',
-              values: [fg3m_rank],
-              tickvals: [1,100,200,300,400,500],
+              label: 'Pts',
+              values: [rankPts],
+              tickvals: [],
             }, {
               range: [500,1],
-              label: 'Min',
-              values: [min_rank],
+              label: '+/-',
+              values: [rankPlusMinus],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'FgM',
+              values: [rankFgM],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'FgA',
+              values: [rankFgA],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'FgPct',
+              values: [rankFgPct],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Fg3M',
+              values: [rankFg3M],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Fg3A',
+              values: [rankFg3A],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Ftm',
+              values: [rankFtM],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'FtA',
+              values: [rankFtA],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Ast',
+              values: [rankAst],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Reb',
+              values: [rankReb],
+              tickvals: []
+            
+            }, {
+              range: [500,1],
+              label: 'OReb',
+              values: [rankOReb],
+              tickvals: []
+            
+            }, {
+              range: [500,1],
+              label: 'DReb',
+              values: [rankDReb],
+              tickvals: []
+            
+            }, {
+              range: [500,1],
+              label: 'Stl',
+              values: [rankStl],
+              tickvals: []
+            
+            }, {
+              range: [500,1],
+              label: 'Blk',
+              values: [rankBlk],
+              tickvals: []
+          
+            }, {
+              range: [500,1],
+              label: 'BlkA',
+              values: [rankBlkA],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Tov',
+              values: [rankTov],
+              tickvals: []
+            }, {
+              range: [500,1],
+              label: 'Pf',
+              values: [rankPf],
               tickvals: [1,100,200,300,400,500]
             }]
         }
 
         let layoutParaCoords = {
+            title: {
+                text:`${playerName}'s Rank: Stats Per 36`,
+                font: {
+                  family: 'Helvetica Neue, monospace',
+                  size: 16,
+                  color: 'teal'
+                },
+            },
+            paper_bgcolor: '#F4F4F3',
+            plot_bgcolor: '#F4F4F3',
             width: 800
           }
           
         let dataParaCoord = [traceParaCoord]
           
         Plotly.newPlot('paracoord', dataParaCoord, layoutParaCoords)
+
+        // construct table
+        let playerTeam = response[3]
+        let playerAge = response[4]
+        let playerGP = response[5]
+        let playerW = response[6]
+        let playerL = response[7]
+        let playerPts = response[29]
+        let playerPlusMinus = response[30]
+        let playerMin = Math.round(response[9])
+        let playerFgM = response[10]
+        let playerFgA = response[11]
+        let playerFgPct = response[12]
+        let playerFg3M = response[13]
+        let playerFg3A = response[14]
+        let playerFg3Pct = response[15]
+        let playerFtM = response[16]
+        let playerFtA = response[17]
+        let playerFtPct = response[18]
+        let playerReb = response[21]
+        let playerOReb = response[19]
+        let playerDReb = response[20]
+        let playerAst = response[22]
+        let playerTov = response[23]
+        let playerStl = response[24]
+        let playerBlk = response[25]
+        let playerBlkA = response[26]
+        let playerPf = response[27]
+
+        let valuesTableAll = [
+            playerTeam,
+            playerAge,
+            playerGP,
+            playerW,
+            playerL,
+            playerPts,
+            playerPlusMinus,
+            playerMin,
+            playerFgM,
+            playerFgA,
+            playerFgPct,
+            playerFg3M,
+            playerFg3A,
+            playerFg3Pct,
+            playerFtM,
+            playerFtA,
+            playerFtPct,
+            playerReb,
+            playerOReb,
+            playerDReb,
+            playerAst,
+            playerTov,
+            playerStl,
+            playerBlk,
+            playerBlkA,
+            playerPf,
+        ]
+
+        let labelsTableAll = [
+            'Team',
+            'Age',
+            'GP',
+            'W',
+            'L',
+            'Pts',
+            'PlusMinus',
+            'Min',
+            'FgM',
+            'FgA',
+            'FgPct',
+            'Fg3M',
+            'Fg3A',
+            'Fg3Pct',
+            'FtM',
+            'FtA',
+            'FtPct',
+            'Reb',
+            'OReb',
+            'DReb',
+            'Ast',
+            'Tov',
+            'Stl',
+            'Blk',
+            'BlkA',
+            'Pf',
+        ]
+        
+
+        let valuesTable = [
+            labelsTableAll,
+            valuesTableAll,
+            ]
+      
+        let dataTable = [{
+            type: 'table',
+            header: {
+            values: [["<b>Category</b>"], ["<b>Value</b>"]],
+            align: ["left", "center"],
+            line: {width: 1, color: '#4A494A'},
+            fill: {color: '#4A494A'},
+            font: {family: "Helvetica Neue", size: 12, color: "white"}
+            },
+            cells: {
+            values: valuesTable,
+            align: ["left", "center"],
+            line: {color: "#4A494A", width: 1},
+            fill: {color: ['white', 'white']},
+            font: {family: "Helvetica Neue", size: 11, color: ["#4A494A"]}
+            }
+        }]
+
+        let layoutTable = {
+            title: {
+                text:`Stats Per 36`,
+                font: {
+                  family: 'Helvetica Neue, monospace',
+                  size: 16,
+                  color: 'teal'
+                },
+            },
+            paper_bgcolor: '#F4F4F3',
+            plot_bgcolor: '#F4F4F3',
+            width: 400
+          }
+        
+        Plotly.plot('playertable', dataTable, layoutTable);
 
     })
 

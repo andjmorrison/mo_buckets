@@ -7,7 +7,8 @@ from resources import mongo_user, mongo_pass, mongo_clusteruri, connection_uri
 from nba_api.stats.endpoints import shotchartdetail, commonplayerinfo, leaguedashplayerstats
 
 
-test = leaguedashplayerstats.LeagueDashPlayerStats(season='2018-19').get_dict()
+test = leaguedashplayerstats.LeagueDashPlayerStats(season='2018-19', 
+    per_mode_detailed='Per36').get_dict()
 # print(test)
 
 conn = (f'mongodb+srv://{mongo_user}:{mongo_pass}@{mongo_clusteruri}')
@@ -101,4 +102,4 @@ for player in test['resultSets'][0]['rowSet']:
     "cfparams" : player[64]}
         
     print(document)
-    db.player_stats2.insert_one(document)
+    db.player_stats_per36.insert_one(document)

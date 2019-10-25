@@ -9,6 +9,13 @@ body {
     background-image: linear-gradient(135deg, #4A494A 0%, #7F9DA4 100%);
     color: #F4F4F3;
 }
+.coord-plot{
+    background-color: #7F9DA4;
+}
+
+.radar-plot{
+    background-color: #7F9DA4;
+}
 
 html,
 body {

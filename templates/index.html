@@ -7,9 +7,9 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Mo Buckets</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
-	
+
 
 </head>
 
@@ -37,27 +37,30 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<div class="col-centered" id="shotchart"></div>
+				<div class="col-centered rounded" id="shotchart"></div>
 			</div>
 			<div class="container-fluid">
-				<div class="col-md-4 text-centered">
-					<div class="col-centered" id="paracoord"></div>
-				<!-- </div>
-				<br>
-				<div class="col-md-6"> -->
-					<div class="col-centered" id="radar"></div>
+				<div class="col-md-4 py-5 text-centered">
+					<div class="coord-plot py-3 container border-info rounded">
+						<div class="col-centered py-1" id="paracoord"></div>
+					</div>
+					
+					<div class="radar-plot py-3 container border-info rounded">
+						<div class="col-centered py-5" id="radar"></div>
+						<div class="col-centered py-5" id="playertable"></div>
+					</div>
 				</div>
 			</div>
+
+			<div class="row"></div>
+
 		</div>
 
-		<div class="row"></div>
-
-	</div>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
-	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-	<script src="{{ url_for('static', filename='js/test.js') }}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+		<script src="{{ url_for('static', filename='js/test.js') }}"></script>
 
 </body>
 

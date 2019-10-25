@@ -67,9 +67,14 @@ def construct_shotchart(player, team):
 @app.route('/playerdashboard/<player>')
 def construct_dashboard(player):
 
-    dashboard = playerdashboardbygeneralsplits.PlayerDashboardByGeneralSplits(player_id=player, season='2018-19').get_dict()
+    dashboard = playerdashboardbygeneralsplits.PlayerDashboardByGeneralSplits(
+        player_id=player, 
+        season='2018-19', 
+        per_mode_detailed='Per36',
+        rank='N',
+        ).get_dict()
 
-    data = dashboard['resultSets'][0]
+    data = dashboard
 
     return jsonify(data)
 
@@ -78,7 +83,7 @@ def construct_dashboard_full(playerId):
 
     idvariable = playerId
 
-    player = db.player_stats2.find({'player_id':int(idvariable)})
+    player = db.player_stats_per36.find({'player_id':int(idvariable)})
 
     stats = []
 
