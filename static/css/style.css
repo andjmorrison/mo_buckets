@@ -1,13 +1,10 @@
 body {
     /* background-color: red, */
-    background-image: linear-gradient(135deg, #F4F4F3 0%, #F4F4F3 100%);
+    background-image: linear-gradient(235deg, #F4F4F3 0%, #F4F4F3 100%);
     box-sizing: border-box;
     padding: 30px;
 }
 
-.main-contain{
-    background-color: red,
-}
 
 .jumbotron {
     /* background-color: #7F9DA4 */

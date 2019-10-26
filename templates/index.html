@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Mo Buckets</title>
+	<title>Mo Buckets ver.2018-19</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
@@ -19,8 +19,11 @@
 	<div class="row">
 
 		<div class="col-md-12 jumbotron text-center">
-			<h1>Mo Buckets</h1>
-			<p>Shot Charts => More Buckets</p>
+			<h1>
+				Mo Buckets
+
+			</h1>
+			<p>ver.2018-19<br>Shot Charts => More Buckets</p>
 		</div>
 
 	</div>
@@ -37,17 +40,17 @@
 	</div>
 
 	<div class="row">
-		
-			<div class="col-md-6">
-				<div class="col-centered rounded" id="shotchart"></div>
-			</div>
+
+		<div class="col-md-6">
+			<div class="col-centered rounded" id="shotchart"></div>
+		</div>
 
 		<div class="container-fluid col-md-4 additional-plots">
 
-				<div class="container-fluid">
-					<div class="col-centered" id="paracoord"></div>
-				</div>
-			
+			<div class="container-fluid">
+				<div class="col-centered" id="paracoord"></div>
+			</div>
+
 			<div class="card" style="width: 18rem;">
 				<div class="playertable col-sm-3">
 					<div class="col py-5" id="playertable"></div>
@@ -55,25 +58,24 @@
 			</div>
 
 			<div class="card col-sm-offset-5 col-sm-3" style="width: 18rem;">
-				<div class="radar col-sm-offset-5 col-sm-3">
+				<div class="radar col-sm-offset-6 col-sm-3">
 					<div class="col py-5" id="radar"></div>
 				</div>
 			</div>
 
 		</div>
+	</div>
 
+	<div class="d-flex flex-column sticky-footer-wrapper">
+		<nav class="navbar fixed-bottom navbar-light bg-light p-1">
+			<a class="navbar-text text-muted mx-auto">version 2018-19<br>© A. Morrison 2019</a>
+		</nav>
+	</div>
 
-
-
-
-
-
-
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
-		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-		<script type="text/javascript"
-			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-		<script src="{{ url_for('static', filename='js/test.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+	<script src="{{ url_for('static', filename='js/test.js') }}"></script>
 
 </body>
 
